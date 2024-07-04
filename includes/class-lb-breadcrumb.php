@@ -122,6 +122,9 @@ class Lb_Breadcrumb {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-lb-breadcrumb-public.php';
 
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'services/class-lb-breadcrumb-from-nav.php';
+
 		$this->loader = new Lb_Breadcrumb_Loader();
 
 	}
