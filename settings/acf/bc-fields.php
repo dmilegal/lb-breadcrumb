@@ -1,5 +1,23 @@
 <?
 add_action('acf/include_fields', function () {
+  $post_types = get_post_types(array('public' => true));
+  $exclude_post_types = array('attachment', 'revision', 'nav_menu_item');
+  $post_types = array_diff($post_types, $exclude_post_types);
+  $post_types["news"] = "news";
+
+  $locations = array();
+  $page_post_types = array();
+  foreach ($post_types as $post_type) {
+    $locations[] = array(
+      array(
+        'param' => 'post_type',
+        'operator' => '==',
+        'value' => $post_type,
+      ),
+    );
+    $page_post_types[] = $post_type;
+  }
+
 
   if (!function_exists('acf_add_local_field_group')) {
     return;
@@ -101,7 +119,7 @@ add_action('acf/include_fields', function () {
                   'class' => '',
                   'id' => '',
                 ),
-                'post_type' => '',
+                'post_type' => $page_post_types,
                 'post_status' => '',
                 'taxonomy' => '',
                 'return_format' => 'id',
@@ -138,57 +156,7 @@ add_action('acf/include_fields', function () {
         ),
       ),
     ),
-    'location' => array(
-      array(
-        array(
-          'param' => 'post_type',
-          'operator' => '==',
-          'value' => 'post',
-        ),
-      ),
-      array(
-        array(
-          'param' => 'post_type',
-          'operator' => '==',
-          'value' => 'page',
-        ),
-      ),
-      array(
-        array(
-          'param' => 'post_type',
-          'operator' => '==',
-          'value' => 'casino',
-        ),
-      ),
-      array(
-        array(
-          'param' => 'post_type',
-          'operator' => '==',
-          'value' => 'bookmaker',
-        ),
-      ),
-      array(
-        array(
-          'param' => 'post_type',
-          'operator' => '==',
-          'value' => 'post',
-        ),
-      ),
-      array(
-        array(
-          'param' => 'post_type',
-          'operator' => '==',
-          'value' => 'lb-application',
-        ),
-      ),
-      array(
-        array(
-          'param' => 'post_type',
-          'operator' => '==',
-          'value' => 'news',
-        ),
-      ),
-    ),
+    'location' => $locations,
     'menu_order' => 0,
     'position' => 'normal',
     'style' => 'default',
